@@ -1,0 +1,59 @@
+create database store;
+
+create table countries(
+    code int primary key ,
+    name varchar(20) unique ,
+    continent_name varchar(20) unique
+);
+
+create table users(
+    id int primary key ,
+    full_name varchar(20) not null ,
+    email varchar(20) unique ,
+    gender char(1) check( gender='m' or gender = 'f' ) ,
+    date_of_birth varchar(15) not null ,
+    created_at datetime ,
+    country_code int  ,
+     foreign key (country_code) references countries(code)
+);
+
+
+create table orders(
+    id int primary key ,
+    user_id int not null ,
+    foreign key (user_id) references users(id),
+    status int check( status='Start' or status = 'Finish' ),
+    created_at datetime not null
+);
+
+
+create table order_products(
+    order_id int  ,
+    foreign key (order_id) references orders(id),
+    product_id int  ,
+    foreign key (product_id) references products(id),
+    quantity int default 0
+);
+
+
+create table products(
+    id int primary key ,
+    name varchar(10) not null ,
+    price int default 0,
+    status varchar(10) check( status='Valid' or status = 'expired' ) ,
+    created_at datetime
+);
+
+# insert
+insert  into countries values  ('971','UAE','Asia');
+insert  into users values ('1','Amwaj alotaibi','Amwaj@gmail.com','f','2000/2/1','2020/2/1','961');
+insert  into orders values  ('2','1234','Start','2023/2/1 ');
+insert  into products values  ('3','QV cream','100','Valid','2023/2/1');
+insert into order_products values ('123','321','200');
+
+# update
+update  countries set  name='K.S.A' where code='966';
+
+# delete
+delete from  products where id='1';
+
